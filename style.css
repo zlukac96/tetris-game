@@ -1,0 +1,83 @@
+:root {
+	  --gridContainerBackground: #1e1f20;
+	  --gridElementBackground: #0c0d0e;
+	  --borderProjectionWidth: 1px;
+	  --ItetrominoColor: red;
+	  --OtetrominoColor: green;
+	  --TtetrominoColor: blue;
+	  --JtetrominoColor: cyan;
+	  --LtetrominoColor: magenta;
+	  --StetrominoColor: yellow;
+	  --ZtetrominoColor: brown;
+}
+
+table{
+	border-radius: 10px;
+	padding: 10px;
+	background-color: var(--gridContainerBackground);
+	border-spacing: 1px;
+}
+
+td{
+	width: 28px;
+	height: 28px;
+	border-radius: 2px;
+	box-sizing: border-box;
+	background-color: var(--gridElementBackground);
+}
+
+.Itetromino{
+	background-color: var(--ItetrominoColor);
+}
+
+.Iprojection{
+	border: var(--borderProjectionWidth) solid var(--ItetrominoColor);
+}
+
+.Otetromino{
+	background-color: var(--OtetrominoColor);
+}
+
+.Oprojection{
+	border: var(--borderProjectionWidth) solid var(--OtetrominoColor);
+}
+
+.Ttetromino{
+	background-color: var(--TtetrominoColor);
+}
+
+.Tprojection{
+	border: var(--borderProjectionWidth) solid var(--TtetrominoColor);
+}
+
+.Jtetromino{
+	background-color: var(--JtetrominoColor);
+}
+
+.Jprojection{
+	border: var(--borderProjectionWidth) solid var(--JtetrominoColor);
+}
+
+.Ltetromino{
+	background-color: var(--LtetrominoColor);
+}
+
+.Lprojection{
+	border: var(--borderProjectionWidth) solid var(--LtetrominoColor);
+}
+
+.Stetromino{
+	background-color: var(--StetrominoColor);
+}
+
+.Sprojection{
+	border: var(--borderProjectionWidth) solid var(--StetrominoColor);
+}
+
+.Ztetromino{
+	background-color: var(--ZtetrominoColor);
+}
+
+.Zprojection{
+	border: var(--borderProjectionWidth) solid var(--ZtetrominoColor);
+}
