@@ -26,6 +26,10 @@ td{
 	background-color: var(--gridElementBackground);
 }
 
+button{
+	margin-top: 20px;
+}
+
 .Itetromino{
 	background-color: var(--ItetrominoColor);
 }

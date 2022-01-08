@@ -4,6 +4,8 @@ const TetrisDimensions = TetrisHeight * TetrisWidth;
 var gridContent = [];
 var gridContentTemp = [];
 var oldGridContent = [];
+var isGamePaused = false;
+var tetrominoInterval;
 
 const tetrominoes = {
 	shape:[
@@ -26,9 +28,13 @@ const tetrominoes = {
 	]
 };
 
-var activeTetromino = tetrominoes.shape[0];
-var activeTetrominoColor = "Itetromino";
-var xTetrominoPosition = 0;
+let randomTetromino = Math.floor(Math.random()*7);
+
+activeTetromino = tetrominoes.shape[randomTetromino];
+activeTetrominoColor = tetrominoes.name[randomTetromino];
+
+
+var xTetrominoPosition = 3;
 var yTetrominoPosition = 0;
 var yTetrominoProjection = 0;
 
@@ -48,6 +54,8 @@ function cloneMatrix(inputMatrix = [[]]){
 function initialization(){
 	
 	let getGridContainer = document.getElementById("TetrisGridContainer");
+	
+	getGridContainer.innerHTML = "";
 	
 	for(let j = 0; j < TetrisHeight; j++){
 		gridContent.push([]);
@@ -81,7 +89,7 @@ function displayGridContent() {
 		}
 	}
 	
-	//oldGridContent = cloneMatrix(gridContentTemp);
+
 	
 }
 
@@ -148,23 +156,22 @@ function isEmptyCheck(){
 
 	}
 	
-//displayGridContent();
+
 	if (numberOfAdded >= 4) {
 		isAdded = true;
 		if (numberOfAddedProjection >= 4) isAddedProjection = true;
-		//displayGridContent();
+
 	}
 	else {
 		gridContentTemp = cloneMatrix(gridContentOld);
 	}
-	//console.log(isAdded);
-	//displayGridContent();
+
 	return [isAdded, isAddedProjection];
 }
 
 
 function addActiveTetrominoToGrid(){
-	console.time("test");
+
 	yTetrominoProjection = yTetrominoPosition;
 	var isAdded = isEmptyCheck()[0];
 	
@@ -177,7 +184,7 @@ function addActiveTetrominoToGrid(){
 		yTetrominoProjection++;
 	}
 	if (isAdded === true) displayGridContent();
-	console.timeEnd("test");
+
 	return isAdded;
 }
 
@@ -209,36 +216,7 @@ function checkFullRows(){
 	}
 }
 
-function keyRecognize(event){
-	//console.log(event.keyCode);
-
-	if(event.keyCode === 37){
-		xTetrominoPosition--;
-		if (addActiveTetrominoToGrid() === false) xTetrominoPosition++;
-	}
-	
-	if(event.keyCode === 38){
-
-		activeTetromino = rotateTetromino(activeTetromino);
-		
-		let shifter = [ 1, -2, 3, -4, 2 ];
-		let i=0;
-		
-		while (addActiveTetrominoToGrid() === false && i<5){
-			xTetrominoPosition -= shifter[i];
-			if (i === 4) activeTetromino = rotateTetromino(activeTetromino, "counterclockwise");
-			i++;
-		}
-
-		
-	}
-	
-	if(event.keyCode === 39){
-		xTetrominoPosition++;
-		if (addActiveTetrominoToGrid() === false) xTetrominoPosition--;
-	}
-	
-	if(event.keyCode === 40){
+function tetrominoDown(){
 		yTetrominoPosition++;
 		
 		if (addActiveTetrominoToGrid() === false) {
@@ -247,7 +225,7 @@ function keyRecognize(event){
 			gridContent = cloneMatrix(gridContentTemp);
 			checkFullRows();
 			
-			let randomTetromino = Math.floor(Math.random()*7);
+			randomTetromino = Math.floor(Math.random()*7);
 			
 			activeTetromino = tetrominoes.shape[randomTetromino];
 			activeTetrominoColor = tetrominoes.name[randomTetromino];
@@ -255,15 +233,83 @@ function keyRecognize(event){
 			
 			addActiveTetrominoToGrid();
 		}
+}
+
+function keyRecognize(event){
+	
+	if(isGamePaused === false){
+
+		if(event.keyCode === 37){
+			xTetrominoPosition--;
+			if (addActiveTetrominoToGrid() === false) xTetrominoPosition++;
+		}
+		
+		if(event.keyCode === 38){
+
+			activeTetromino = rotateTetromino(activeTetromino);
+			
+			let shifter = [ 1, -2, 3, -4, 2 ];
+			let i=0;
+			
+			while (addActiveTetrominoToGrid() === false && i<5){
+				xTetrominoPosition -= shifter[i];
+				if (i === 4) activeTetromino = rotateTetromino(activeTetromino, "counterclockwise");
+				i++;
+			}
+
+			
+		}
+		
+		if(event.keyCode === 39){
+			xTetrominoPosition++;
+			if (addActiveTetrominoToGrid() === false) xTetrominoPosition--;
+		}
+		
+		if(event.keyCode === 40){
+			tetrominoDown();
+		}
+	
 	}
+}
+
+function pauseGame(){
+	if(isGamePaused === false){
+		isGamePaused = true;
+		clearInterval(tetrominoInterval);
+	}else{
+		isGamePaused = false;
+		tetrominoInterval = setInterval(tetrominoDown, 500);
+	}
+}
+
+function newGame(){
+	
+	gridContent = [];
+	gridContentTemp = [];
+	oldGridContent = [];
+	isGamePaused = false;
+	tetrominoInterval;
+	randomTetromino = Math.floor(Math.random()*7);
+	activeTetromino = tetrominoes.shape[randomTetromino];
+	activeTetrominoColor = tetrominoes.name[randomTetromino];
+	xTetrominoPosition = 3;
+	yTetrominoPosition = 0;
+	yTetrominoProjection = 0;
+	
+	initialization();
+	displayGridContent();
+	addActiveTetrominoToGrid();
+	isGamePaused = false;
+	clearInterval(tetrominoInterval);
+	tetrominoInterval = setInterval(tetrominoDown, 500);
 }
 
 function gameRunning(){
 	initialization();
 	displayGridContent();
 	addActiveTetrominoToGrid();
+	tetrominoInterval = setInterval(tetrominoDown, 500);
 }
-
 
 gameRunning();
 
