@@ -11,6 +11,11 @@
 	  --ZtetrominoColor: brown;
 }
 
+body{
+	display: flex;
+	align-items: center;
+}
+
 table{
 	border-radius: 10px;
 	padding: 10px;
@@ -27,6 +32,7 @@ td{
 }
 
 button{
+	margin-left: 20px;
 	margin-top: 20px;
 }
 
